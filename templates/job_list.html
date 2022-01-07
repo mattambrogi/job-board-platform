@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}All Jobs{% endblock title %}
+
+{% block content %}
+    <div class="mx-auto" style="width:50%;">
+        <h2>Explore All Jobs</h2>
+        {% for job in object_list %}
+            <div class="card">
+                <div class="card-header">
+                <span class="font-weight-bold">
+                    <a style="color:black;" href="{% url 'job_detail' job.pk %}">{{ job.title }} | {{ job.company }}</a>
+                </span> &middot;
+                <span class="text-muted">Host: {{ job.host }} |
+                Posted: {{ job.date }}</span>
+            </div>
+            <div class="card-body">
+                {{ job.body|striptags|truncatechars:100 }}
+            </div>
+            {% if job.host == user %}
+                <div class="card-footer text-center text-muted">
+                    <a href="{% url 'job_edit' job.pk %}">Edit</a> |
+                    <a href="{% url 'job_delete' job.pk %}">Delete</a>
+                </div>
+            {% endif %}
+            <br />
+        {% endfor %}
+    </div>
+{% endblock content %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% block title %}All Jobs{% endblock title %}
+
+{% block content %}
+    <div class="jumbotron text-center">
+        <h1 class="display-4"> {{ user }}'s Employer Admin</h1>
+        <p class="lead">Manage your job listings here</p>
+       
+    </div>
+    <div class="mx-auto" style="width:50%;">
+        <h2>Active Jobs</h2>
+        {% if active_jobs|length > 0 %}
+            {% for job in active_jobs %}
+                <div class="mt-5 mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                        <span class="font-weight-bold">
+                            <a href="{% url 'job_detail' job.pk %}">{{ job.title }}</a>
+                        </span>
+                        <br/>
+                        <span>
+                            {{ job.company }}
+                        </span>
+                        <br/>
+                        <span class="text-muted"> 
+                            Host: {{ job.host }} 
+                            <br/>
+                            Submitted: {{ job.date|date:"M d, Y" }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        {{ job.body|striptags|truncatechars:100 }}
+                    </div>
+                    {% if job.author == user %}
+                        <div class="card-footer text-center text-muted">
+                            <a href="{% url 'job_edit_employer' job.pk %}">Edit</a> |
+                            <a href="{% url 'job_delete' job.pk %}">Delete</a>
+                        </div>
+                    {% endif %}
+                    <br />
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="font-weight-bold mt-5 mb-3">No active jobs.</p>
+            <p>When a job is accepted it will show up here.</p>
+        {% endif %}
+
+        <h2 class="mt-5">Pending Jobs</h2>
+        {% if pending_jobs|length > 0 %}
+            {% for job in pending_jobs %}
+                <div class="mt-5 mb-5">
+                    <div class="card">
+                        <div class="card-header">
+                        <span class="font-weight-bold">
+                            <a href="{% url 'job_detail' job.pk %}">{{ job.title }} | {{ job.company }}</a>
+                        </span> &middot;
+                        <span class="text-muted"> Host: {{ job.host }} |
+                            Author: {{ job.author }} |
+                            {{ job.date }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        {{ job.body|striptags|truncatechars:100 }}
+                    </div>
+                    {% if job.author == user %}
+                        <div class="card-footer text-center text-muted">
+                            <a href="{% url 'job_edit_employer' job.pk %}">Edit</a> |
+                            <a href="{% url 'job_delete' job.pk %}">Delete</a>
+                        </div>
+                    {% endif %}
+                    <br />
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="font-weight-bold mt-5 mb-3">No pending jobs right now.</p>
+            <p></p>
+        {% endif %}
+    </div>
+{% endblock content %}

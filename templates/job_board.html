@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+
+{% block title %}All Jobs{% endblock title %}
+
+{% block content %}
+    <div class="jumbotron">
+        <div class="mx-auto" style="width:50%;">
+            <h2 class="display-5">{{page_user.username}}'s Job Board</h2>
+            <p>This board focuses on jobs in product management and machine learning.</p>
+            <div class="mt-5">
+                <p class="font-weight-bold" style="margin:0;">By Matt</p>
+                <p>Matt is a product manager and the creator of this site.</p>
+            </div>
+            <p class="lead mt-5 mb-0">
+                <a class="btn btn-primary btn-lg" href="{% url 'new_job' page_user.pk %}"
+                    role="button">Submit a job</a>
+            </p>
+        </div>
+    </div>
+    <div class="mx-auto" style="width:50%;">
+        {% for job in jobs %}
+            <div class="card-borderless">
+                <div class="card-body">
+                    <span class="font-weight-bold">
+                        <a style="color:black;" href="{% url 'job_detail' job.pk %}">{{ job.title }}</a>
+                    </span> 
+                    <br/>
+                    <span>
+                        {{ job.company }}
+                    </span> 
+                    <br/>
+                    <span class="text-muted" style="font-size:14px;"> 
+                        Location &middot {{ job.date|date:"M d" }}
+                    </span>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+        <div class="mt-5">
+            <p>{{ hitcount.total_hits }} people have viewed this job board</p>
+        </div>
+    </div>
+{% endblock content %}

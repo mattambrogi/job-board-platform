@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load hitcount_tags %}
+
+{% block title %}All Jobs{% endblock title %}
+
+{% block content %}
+    <div class="jumbotron text-center">
+        <h1 class="display-4"> {{ user }}'s Admin</h1>
+        <p class="lead">Manage your job board here</p>
+        <p class="lead">
+            <a class="btn btn-primary btn-lg" href="{% url 'new_job' user.pk %}"
+                role="button">Submit a job</a>
+        </p>
+        <p>Views of your job board: {% get_hit_count for user %}</p>
+        <p>Total views of your jobs: {{total_job_views}}</p>
+    </div>
+    <div class="mx-auto" style="width:50%;">
+        <h2>Accepted</h2>
+        <div>
+            {% if accepted_jobs|length > 0 %}
+                {% for job in accepted_jobs %}
+                    <div class="mt-5 mb-5">
+                        <div class="card">
+                            <div class="card-header">
+                            <span class="font-weight-bold">
+                                <a href="{% url 'job_detail' job.pk %}">{{ job.title }}</a>
+                            </span> 
+                            <br/>
+                            <span>
+                                {{ job.company }}
+                            </span> 
+                            <br/>
+                            <span class="text-muted">
+                                Author: {{ job.author }}
+                                <br/>
+                                Posted: {{ job.date|date:"M d, Y" }}
+                                <br/>
+                                Views: {% get_hit_count for job %}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            {{ job.body|striptags|truncatechars:100 }}
+                        </div>
+                        {% if job.host == user %}
+                            <div class="card-footer text-center text-muted">
+                                {% if job.author == user %}
+                                    <a href="{% url 'job_edit_employer' job.pk %}">Edit</a> |
+                                {% endif %}
+                                <a href="{% url 'job_edit' job.pk %}">Remove</a> |
+                                <a href="{% url 'job_delete' job.pk %}">Delete</a>
+                            </div>
+                        {% endif %}
+                        <br />
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="font-weight-bold mt-5 mb-3">No accepted job.s</p>
+                <p>Create a job or accept a pending listing.</p>
+            {% endif %}
+        </div>
+        <h2 class="mt-5">Pending</h2>
+        <div>
+            {% if pending_jobs|length > 0 %}
+                {% for job in pending_jobs %}
+                    <div class="mt-5 mb-5">
+                        <div class="card">
+                            <div class="card-header">
+                            <span class="font-weight-bold">
+                                <a href="{% url 'job_detail' job.pk %}">{{ job.title }} | {{ job.company }}</a>
+                            </span> &middot;
+                            <span class="text-muted"> 
+                                Author: {{ job.author }}
+                                <br/>
+                                {{ job.date }}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            {{ job.body|striptags|truncatechars:100 }}
+                        </div>
+                        {% if job.host == user %}
+                            <div class="card-footer text-center text-muted">
+                                {% if job.author == user %}
+                                    <a href="{% url 'job_edit_employer' job.pk %}">Edit</a> |
+                                {% endif %}
+                                <a href="{% url 'job_edit' job.pk %}">Accept</a> |
+                                <a href="{% url 'job_delete' job.pk %}">Delete</a>
+                            </div>
+                        {% endif %}
+                        <br />
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="font-weight-bold mt-5 mb-3">No pending jobs right now.</p>
+                <p>Check back later.</p>
+            {% endif %}
+        </div>
+    </div>
+    
+{% endblock content %}

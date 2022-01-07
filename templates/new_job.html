@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="mx-auto mb-5" style="width:50%;">
+        <h1>Submit a Job</h1>
+        <p class = "font-weight-bold">{{ page_user }}'s Job Board </p>
+        <form action="" method="post">{% csrf_token %}
+            {{ form.media }}
+            {{ form|crispy }}
+            <button class="btn btn-success ml-2" type="submit">Save</button>
+        </form>
+    </div>  
+
+{% endblock content %}

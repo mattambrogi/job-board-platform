@@ -1,0 +1,27 @@
+<!-- templates/home.html -->
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+<br/>
+<div class="jumbotron">
+    <h1 class="display-4">Job Boardz</h1>
+    <p class="lead">Host your own job board</p>
+    <p class="lead">
+        {% if user.is_authenticated %}
+            {% if user.is_host == True %}
+                <a class="btn btn-primary btn-lg" href="{% url 'admin' user.slug %}"
+                    role="button">Manage my job board</a>
+            {% else %}
+                <a class="btn btn-primary btn-lg" href="{% url 'employer_admin' user.slug %}"
+                    role="button">Manage my job posts</a>
+            {% endif %}
+        {% else %}
+            <a class="btn btn-primary btn-lg" href="{% url 'signup' %}"
+                role="button">Sign Up</a>
+        {% endif %}
+        
+    </p>
+</div>
+{% endblock content %}
