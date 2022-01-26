@@ -119,6 +119,7 @@ STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
 STATIC_ROOT = str(BASE_DIR.joinpath('staticfiles'))
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage' 
 
+
 #Things I added during project
 AUTH_USER_MODEL = 'accounts.CustomUser' #use our new user model as opposed to built in
 
@@ -130,10 +131,3 @@ LOGOUT_REDIRECT_URL = 'home' # where to send after log out
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#DEFAULT_FROM_EMAIL = 'ambrogirkpt@gmail.com'
-#EMAIL_HOST = 'smtp.sendgrid.net'
-#EMAIL_HOST_USER = 'apikey'
-#EMAIL_HOST_PASSWORD = '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'
-#EMAIL_PORT = 587
-#EMAIL_USE_TLS = True
